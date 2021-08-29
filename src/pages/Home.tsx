@@ -1,7 +1,10 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import {useState, useEffect} from 'react'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonIcon} from '@ionic/react';
+import { trash } from 'ionicons/icons'
 import ExploreContainer from '../components/ExploreContainer';
-import { useState } from 'react';
 import './Home.css';
+
+
 
 export interface Todo {
   id: number;
@@ -10,6 +13,16 @@ export interface Todo {
 
 const Home: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    async function doFetch() {
+      const result = await fetch('/assets/todos.json');
+      const data = await result.json();
+      setTodos(data);
+    }
+    doFetch();
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
@@ -18,11 +31,16 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        {todos.length === 0 ? (
-          <div>No todos, add some!</div>
-        ) : (
-            <div>todos will go here</div>
-          )}
+      <IonList>
+            {todos.map((todo, i) => (
+              <IonItem key={i}>
+                <IonLabel>
+                  <h2>{todo.text}</h2>
+                </IonLabel>
+                <IonIcon data-icon="trash" icon={trash} color="danger" slot="end" />
+              </IonItem>
+            ))}
+        </IonList>
       </IonContent>
     </IonPage>
   );
