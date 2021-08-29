@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonIcon} from '@ionic/react';
-import { trash } from 'ionicons/icons'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonIcon, IonFab,IonFabButton,IonModal} from '@ionic/react';
+import { trash, add } from 'ionicons/icons'
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
 
@@ -13,6 +13,7 @@ export interface Todo {
 
 const Home: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     async function doFetch() {
@@ -41,6 +42,17 @@ const Home: React.FC = () => {
               </IonItem>
             ))}
         </IonList>
+        <IonFab vertical="bottom" horizontal="end">
+          <IonFabButton title="Add Todo" onClick={() => setShowModal(true)}>
+            <IonIcon data-icon="add" icon={add} />
+          </IonFabButton>
+        </IonFab>
+        <IonModal
+          onDidDismiss={() => setShowModal(false)}
+          isOpen={showModal}
+        >
+          {/* Todo Form will go here */}
+        </IonModal>
       </IonContent>
     </IonPage>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Home, { Todo } from './Home';
 
 function mockFetch(data: any) {
@@ -30,4 +30,10 @@ test('when ToDoList is loaded with todos, the todos should be in the list', asyn
     await findByText(todos[0].text);
     await findByText(todos[1].text);
 })
+
+test('when clicking the new button, we should be able to add a new todo', async () => {
+    const { findByTitle, findByText } = render(<Home />);
+    const addButton = await findByTitle('Add Todo');  
+    fireEvent.click(addButton);
+});
 
