@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import Home, { Todo } from './Home';
 
 function mockFetch(data: any) {
@@ -35,5 +36,12 @@ test('when clicking the new button, we should be able to add a new todo', async 
     const { findByTitle, findByText } = render(<Home />);
     const addButton = await findByTitle('Add Todo');  
     fireEvent.click(addButton);
+
+    const input = await findByTitle('Todo Text');
+    const button = await findByText('Save');
+
+    fireEvent.ionChange(input, 'test todo');
+    fireEvent.click(button);
+    await findByText('test todo');
 });
 
